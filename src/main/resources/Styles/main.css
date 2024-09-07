@@ -1,6 +1,5 @@
 .root{
-    /*-fx-background-image: url('https://foojay.io/wp-content/uploads/2022/11/trinity-skyline.png'), url('https://www.tecnm.mx/images/tecnm_virtual/tecnm.png')*/
-    -fx-background-image: url("../image/trinity-skyline.png");
+    -fx-background-image: url("../image/Strokes.jpg");
     -fx-background-size: 100%, 200px;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center, bottom right;

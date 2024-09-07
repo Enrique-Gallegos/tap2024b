@@ -1,0 +1,17 @@
+.button{
+    -fx-background-color: #8cb2f1;
+    -fx-text-fill: black;
+    -fx-border-radius: 50;
+    -fx-border-color: white;
+    -fx-background-radius: 50;
+    -fx-text-alignment: center;
+    -fx-padding: 5 5 5 5;
+}
+#font-button{
+    -fx-font: bold italic 20pt "Arial";
+    -fx-effect: dropshadow( one-pass-box, black, 8,0,2,0);
+    -fx-pref-width: 320px;
+}
+.root{
+    -fx-background-color: black;
+}
