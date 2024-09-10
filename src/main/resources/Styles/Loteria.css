@@ -10,6 +10,11 @@
     -fx-font: bold italic 30pt "Arial";
 }
 
+#font-G_P{
+    -fx-font: bold italic 100pt "Arial";
+
+}
+
 #font-button{
     -fx-border-radius: 100;
     -fx-background-radius: 100;

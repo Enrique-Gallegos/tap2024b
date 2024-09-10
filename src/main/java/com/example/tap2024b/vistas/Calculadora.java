@@ -67,7 +67,7 @@ public class Calculadora extends Stage {
                 }
 
                 txtPantalla.setText(String.valueOf(r));
-                operacionTerminada = true; // Operación completada
+                operacionTerminada = true;
             } catch (NumberFormatException e) {
                 mostrarAlertError("Formato de número no válido.");
             } catch (ArithmeticException e) {
