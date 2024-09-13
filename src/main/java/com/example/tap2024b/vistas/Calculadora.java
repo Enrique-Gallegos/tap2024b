@@ -2,7 +2,6 @@ package com.example.tap2024b.vistas;
 
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -25,6 +24,7 @@ public class Calculadora extends Stage {
     private String op;
     private Button btnClear;
     private boolean operacionTerminada;
+    private static final String ERROR_PREFIX = "Error";
 
     private void CrearUI() {
 
@@ -38,45 +38,43 @@ public class Calculadora extends Stage {
         btnClear.setId("font-button");
 
         arBtns[2][3].setOnAction(actionEvent -> {
-            try {
-                if (txtPantalla.getText().isEmpty()) {
-                    mostrarAlertError("No se ha ingresado un número.");
-                    return;
-                }
-
-                x2 = Float.parseFloat(txtPantalla.getText());
-
-                switch (op) {
-                    case "+":
-                        r = x1 + x2;
-                        break;
-                    case "-":
-                        r = x1 - x2;
-                        break;
-                    case "*":
-                        r = x1 * x2;
-                        break;
-                    case "/":
-                        if (x2 == 0) {
-                            throw new ArithmeticException("División por cero");
-                        }
-                        r = x1 / x2;
-                        break;
-                    default:
-                        break;
-                }
-
-                txtPantalla.setText(String.valueOf(r));
-                operacionTerminada = true;
-            } catch (NumberFormatException e) {
-                mostrarAlertError("Formato de número no válido.");
-            } catch (ArithmeticException e) {
-                mostrarAlertError(e.getMessage());
-            } catch (Exception e) {
-                mostrarAlertError("Ha ocurrido un error.");
+            if (op == null || txtPantalla.getText().isEmpty()) {
+                txtPantalla.setText("Error: Falta número u operación");
+                return;
             }
+
+            if (!esNumero(txtPantalla.getText())) {
+                txtPantalla.setText("Error: Número inválido");
+                return;
+            }
+
+            x2 = Float.parseFloat(txtPantalla.getText());
+
+            if (op.equals("/") && x2 == 0) {
+                txtPantalla.setText("Error: Division entre 0");
+                return;
+            }
+
+            switch (op) {
+                case "+":
+                    r = x1 + x2;
+                    break;
+                case "-":
+                    r = x1 - x2;
+                    break;
+                case "*":
+                    r = x1 * x2;
+                    break;
+                case "/":
+                    r = x1 / x2;
+                    break;
+            }
+
+            txtPantalla.setText(String.valueOf(r));
+            operacionTerminada = true;
         });
 
+        // Acción para el botón "Clear"
         btnClear.setOnAction(actionEvent -> borrarPantalla());
 
         vBox = new VBox(txtPantalla, gdpTeclado, btnClear);
@@ -107,19 +105,26 @@ public class Calculadora extends Stage {
 
     private void borrarPantalla() {
         txtPantalla.clear();
-        txtPantalla.setText("");
         x1 = 0;
         x2 = 0;
         r = 0;
+        op = null;
         operacionTerminada = false;
     }
 
     private void detectarTecla(String tecla) {
+        if (txtPantalla.getText().startsWith(ERROR_PREFIX)) {
+            txtPantalla.clear();
+        }
+
         if (Operaciones.contains(tecla)) {
+            if (!esNumero(txtPantalla.getText())) {
+                txtPantalla.setText("Error: Número inválido");
+                return;
+            }
             op = tecla;
             x1 = Float.parseFloat(txtPantalla.getText());
             txtPantalla.setText("");
-            System.out.println("x1=" + x1 + "\nx2=" + x2 + "\nop=" + op);
         } else {
             if (operacionTerminada && !Operaciones.contains(tecla)) {
                 txtPantalla.clear();
@@ -129,12 +134,12 @@ public class Calculadora extends Stage {
         }
     }
 
-    private void mostrarAlertError(String mensaje) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setHeaderText(null);
-        alert.setTitle("Error en la operación");
-        alert.setContentText(mensaje);
-        alert.showAndWait();
+    private boolean esNumero(String str) {
+        try {
+            Float.parseFloat(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
-
 }
