@@ -17,23 +17,22 @@ import javafx.util.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-
 
 public class Loteria extends Stage {
 
     private Timeline timeline;
     private HBox hboxMain, hboxButtons;
     private VBox vboxTablilla, vboxMazo;
-    private GridPane gdpTabla;
     private Button Anterior, Siguiente, Inic_Det;
-    private Scene escena,res;
+    private Scene escena, res;
     private List<Integer> numerosDisponibles, Mazo;
-    private Button[][] arBtnTab;
-    private Boolean[][] Matriz_B;
+    private Button[][][] arBtnTab = new Button[5][4][4];
+    private Boolean[][][] Matriz_B = new Boolean[5][4][4];
     private ImageView Baraja;
-    private Label Cont,G_P;
+    private Label Cont, G_P;
+    private GridPane gdpTabla;
+    private GridPane[] Lista_Tablas = new GridPane[5];
+    private int ind_Tabla = 0;
 
     public Loteria() {
         inicializarNumeros();
@@ -41,16 +40,18 @@ public class Loteria extends Stage {
         this.setTitle("Loteria Mexicana");
         this.setScene(escena);
         this.show();
-        /**System.out.println(numerosDisponibles);
-        System.out.println(Mazo);**/
     }
 
     private void CrearUI() {
-        ImageView imv_Ant, imv_Sig, tapa;
+        ImageView imv_Ant, imv_Sig;
         imv_Ant = new ImageView(new Image(getClass().getResource("/image/Izquierda.png").toString()));
         imv_Sig = new ImageView(new Image(getClass().getResource("/image/Derecha.png").toString()));
-        gdpTabla = new GridPane();
-        CrearTablilla();
+
+        for (int i = 0; i < 5; i++) {
+            Lista_Tablas[i] = new GridPane();
+            CrearTablilla(Lista_Tablas[i], i);
+        }
+
         Cont = new Label("Contador");
         Baraja = new ImageView(new Image(getClass().getResource("/image/dorso.jpeg").toString()));
         Baraja.setFitHeight(500);
@@ -60,11 +61,9 @@ public class Loteria extends Stage {
         Cont.setMaxSize(400, 1000);
         Inic_Det.setPrefSize(250, 100);
         Inic_Det.setId("font-inic");
-
         Cont.setId("font-lbl");
 
         vboxMazo = new VBox(Cont, Baraja, Inic_Det);
-
         vboxMazo.setAlignment(Pos.CENTER);
 
         Anterior = new Button();
@@ -73,10 +72,14 @@ public class Loteria extends Stage {
         Siguiente.setGraphic(imv_Sig);
         Anterior.setId("font-button");
         Siguiente.setId("font-button");
+        Siguiente.setOnAction(actionEvent -> Tabla_Sig());
+        Anterior.setOnAction(actionEvent -> Tabla_Ant());
 
         Inic_Det.setOnAction(actionEvent -> InitDet_cont());
         hboxButtons = new HBox(Anterior, Siguiente);
         hboxButtons.setSpacing(176);
+
+        gdpTabla = Lista_Tablas[ind_Tabla];
         vboxTablilla = new VBox(gdpTabla, hboxButtons);
 
         hboxMain = new HBox(vboxTablilla, vboxMazo);
@@ -86,57 +89,62 @@ public class Loteria extends Stage {
         escena.getStylesheets().add(getClass().getResource("/styles/Loteria.css").toString());
     }
 
-    private void CrearTablilla() {
-        arBtnTab = new Button[4][4];
-        Matriz_B = new Boolean[4][4];
-        Image img;
-        ImageView imv;
-
+    private void CrearTablilla(GridPane listaTabla, int k) {
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                Matriz_B[i][j] = false;
-
+                Matriz_B[k][i][j] = false;
                 int numeroAleatorio = obtenerNumeroAleatorio();
                 String imagePath = "/image/imagen" + numeroAleatorio + ".jpg";
-                img = new Image(getClass().getResource(imagePath).toString());
-
-
-                imv = new ImageView(img);
+                Image img = new Image(getClass().getResource(imagePath).toString());
+                ImageView imv = new ImageView(img);
                 imv.setFitWidth(100);
                 imv.setFitHeight(130);
-
-                arBtnTab[i][j] = new Button();
-                arBtnTab[i][j].setGraphic(imv);
+                arBtnTab[k][i][j] = new Button();
+                arBtnTab[k][i][j].setGraphic(imv);
                 final int x = i;
                 final int y = j;
-                arBtnTab[i][j].setOnAction(actionEvent -> Marcar(x, y));
-                gdpTabla.add(arBtnTab[i][j], j, i);
+                arBtnTab[k][i][j].setOnAction(actionEvent -> Marcar(k, x, y));
+                listaTabla.add(arBtnTab[k][i][j], j, i);
             }
         }
     }
 
-
-    private void inicializarNumeros() {
-        numerosDisponibles = new ArrayList<>();
-        Mazo = new ArrayList<>();
-        for (int i = 1; i <= 54; i++) {
-            numerosDisponibles.add(i);
-            Mazo.add(i);
-        }
-        Collections.shuffle(numerosDisponibles);
-        Collections.shuffle(Mazo);
+    private void Marcar(int tab_Ind, int x, int y) {
+        Image hechoImg = new Image(getClass().getResource("/image/Hecho.png").toString());
+        ImageView imvHecho = new ImageView(hechoImg);
+        imvHecho.setFitWidth(100);
+        imvHecho.setFitHeight(130);
+        arBtnTab[tab_Ind][x][y].setGraphic(imvHecho);
+        Matriz_B[tab_Ind][x][y] = true;
     }
 
-    private int obtenerNumeroAleatorio() {
-        return numerosDisponibles.remove(0);
+    private void Tabla_Sig() {
+        if (ind_Tabla == 4) {
+            ind_Tabla = 0;
+        } else {
+            ind_Tabla++;
+        }
+        gdpTabla = Lista_Tablas[ind_Tabla];
+        vboxTablilla = new VBox(gdpTabla, hboxButtons);
+        hboxMain.getChildren().set(0, vboxTablilla);
+    }
+
+    private void Tabla_Ant() {
+        if (ind_Tabla == 0) {
+            ind_Tabla = 4;
+        } else {
+            ind_Tabla--;
+        }
+        gdpTabla = Lista_Tablas[ind_Tabla];
+        vboxTablilla = new VBox(gdpTabla, hboxButtons);
+        hboxMain.getChildren().set(0, vboxTablilla);
     }
 
     private void InitDet_cont() {
         switch (Inic_Det.getText()) {
             case "Iniciar":
                 Inic_Det.setText("Detener");
-
-                timeline = new Timeline(new KeyFrame(Duration.seconds(.01), event -> actualizarContador()));
+                timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> actualizarContador()));
                 timeline.setCycleCount(Timeline.INDEFINITE);
                 timeline.play();
                 break;
@@ -149,50 +157,39 @@ public class Loteria extends Stage {
                 break;
 
             case "Resultado":
-            G_P = new Label("");
-            G_P.setId("font-G_P");
+                G_P = new Label("");
+                G_P.setId("font-G_P");
 
-            boolean gano = true;
-            for (int i = 0; i < 4; i++) {
-                for (int j = 0; j < 4; j++) {
-                    if (!Matriz_B[i][j]) {
-                        gano = false;
-                        break;
+                boolean gano = true;
+                for (int i = 0; i < 4; i++) {
+                    for (int j = 0; j < 4; j++) {
+                        if (!Matriz_B[ind_Tabla][i][j]) {
+                            gano = false;
+                            break;
+                        }
                     }
+                    if (!gano) break;
                 }
-                if (!gano) break;
-            }
 
-            if (gano) {
-                G_P.setText("¡Ganaste!");
-            } else {
-                G_P.setText("¡Perdiste! Debes prestar más atención.");
-            }
-            Stage re = new Stage();
-            res=new Scene(G_P);
-            re.setTitle("Resultado");
-            re.setScene(res);
-            re.show();
-
-            break;
+                if (gano) {
+                    G_P.setText("¡Ganaste!");
+                } else {
+                    G_P.setText("¡Perdiste! Debes prestar más atención.");
+                }
+                Stage re = new Stage();
+                res = new Scene(G_P);
+                re.setTitle("Resultado");
+                re.setScene(res);
+                re.show();
+                break;
 
             default:
                 break;
         }
     }
 
-
-    private void Marcar(int x, int y) {
-        Image hechoImg = new Image(getClass().getResource("/image/Hecho.png").toString());
-        ImageView imvHecho = new ImageView(hechoImg);
-        imvHecho.setFitWidth(100);
-        imvHecho.setFitHeight(130);
-        arBtnTab[x][y].setGraphic(imvHecho);
-        Matriz_B[x][y] = true;
-    }
-
     private void actualizarContador() {
-        if(Mazo.isEmpty()) {
+        if (Mazo.isEmpty()) {
             switch (Cont.getText()) {
                 case "00:05":
                 case "00:04":
@@ -209,9 +206,8 @@ public class Loteria extends Stage {
                     break;
                 default:
                     break;
-        }
-        }
-        else{
+            }
+        } else {
             switch (Cont.getText()) {
                 case "Contador", "00:01":
                     Cont.setText("00:05");
@@ -235,19 +231,35 @@ public class Loteria extends Stage {
         }
     }
 
-    private void Cambiar_carta(){
+    private void Cambiar_carta() {
         if (!Mazo.isEmpty()) {
             int numeroCarta = Mazo.remove(0);
             String imagePath = "/image/imagen" + numeroCarta + ".jpg";
             Image nuevaImagen = new Image(getClass().getResource(imagePath).toString());
             Baraja.setImage(nuevaImagen);
-        }
-        else{
+        } else {
             Image nuevaImagen = new Image(getClass().getResource("/image/Gracias.png").toString());
             Baraja.setImage(nuevaImagen);
             Cont.setText("00:00");
             Inic_Det.setText("Resultado");
         }
+    }
 
+    private void inicializarNumeros() {
+        numerosDisponibles = new ArrayList<>();
+        Mazo = new ArrayList<>();
+        for (int i = 1; i <= 54; i++) {
+            numerosDisponibles.add(i);
+            Mazo.add(i);
+        }
+        Collections.shuffle(numerosDisponibles);
+        Collections.shuffle(Mazo);
+    }
+
+    private int obtenerNumeroAleatorio() {
+        if (numerosDisponibles.isEmpty()) {
+            inicializarNumeros();
+        }
+        return numerosDisponibles.remove(0);
     }
 }
