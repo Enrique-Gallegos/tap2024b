@@ -262,4 +262,8 @@ public class Loteria extends Stage {
         }
         return numerosDisponibles.remove(0);
     }
+
+
 }
+
+
