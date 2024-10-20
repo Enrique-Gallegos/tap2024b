@@ -14,6 +14,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -33,6 +35,7 @@ public class Loteria extends Stage {
     private GridPane gdpTabla;
     private GridPane[] Lista_Tablas = new GridPane[5];
     private int ind_Tabla = 0;
+    private String path = new String("C:\\Users\\Admin\\IdeaProjects\\TAP2024b\\src\\main\\resources\\image\\");
 
     public Loteria() {
         inicializarNumeros();
@@ -44,8 +47,8 @@ public class Loteria extends Stage {
 
     private void CrearUI() {
         ImageView imv_Ant, imv_Sig;
-        imv_Ant = new ImageView(new Image(getClass().getResource("/image/Izquierda.png").toString()));
-        imv_Sig = new ImageView(new Image(getClass().getResource("/image/Derecha.png").toString()));
+        imv_Ant = new ImageView(new Image(path+"Izquierda.png"));
+        imv_Sig = new ImageView(new Image(path+"Derecha.png"));
 
         for (int i = 0; i < 5; i++) {
             Lista_Tablas[i] = new GridPane();
@@ -53,7 +56,7 @@ public class Loteria extends Stage {
         }
 
         Cont = new Label("Contador");
-        Baraja = new ImageView(new Image(getClass().getResource("/image/dorso.jpeg").toString()));
+        Baraja = new ImageView(new Image(path+"dorso.jpeg"));
         Baraja.setFitHeight(500);
         Baraja.setFitWidth(350);
         Inic_Det = new Button("Iniciar");
@@ -86,7 +89,7 @@ public class Loteria extends Stage {
         hboxMain.setSpacing(300);
         hboxMain.setPadding(new Insets(20));
         escena = new Scene(hboxMain, 1200, 700);
-        escena.getStylesheets().add(getClass().getResource("/styles/Loteria.css").toString());
+        escena.getStylesheets().add(new File("C:\\Users\\Admin\\IdeaProjects\\TAP2024b\\src\\main\\resources\\Styles\\Loteria.css").toURI().toString());
     }
 
     private void CrearTablilla(GridPane listaTabla, int k) {
@@ -94,9 +97,11 @@ public class Loteria extends Stage {
             for (int j = 0; j < 4; j++) {
                 Matriz_B[k][i][j] = false;
                 int numeroAleatorio = obtenerNumeroAleatorio();
-                String imagePath = "/image/imagen" + numeroAleatorio + ".jpg";
-                Image img = new Image(getClass().getResource(imagePath).toString());
-                ImageView imv = new ImageView(img);
+
+                /*String imagePath = "/image/imagen" + numeroAleatorio + ".jpg";
+                Image img = new Image(path+numeroAleatorio+".jpg");*/
+
+                ImageView imv = new ImageView(new Image(path+"imagen"+numeroAleatorio+".jpg"));
                 imv.setFitWidth(100);
                 imv.setFitHeight(130);
                 arBtnTab[k][i][j] = new Button();
@@ -110,8 +115,7 @@ public class Loteria extends Stage {
     }
 
     private void Marcar(int tab_Ind, int x, int y) {
-        Image hechoImg = new Image(getClass().getResource("/image/Hecho.png").toString());
-        ImageView imvHecho = new ImageView(hechoImg);
+        ImageView imvHecho = new ImageView(new Image(path+"Hecho.png"));
         imvHecho.setFitWidth(100);
         imvHecho.setFitHeight(130);
         arBtnTab[tab_Ind][x][y].setGraphic(imvHecho);
@@ -144,7 +148,7 @@ public class Loteria extends Stage {
         switch (Inic_Det.getText()) {
             case "Iniciar":
                 Inic_Det.setText("Detener");
-                timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> actualizarContador()));
+                timeline = new Timeline(new KeyFrame(Duration.seconds(.1), event -> actualizarContador()));
                 timeline.setCycleCount(Timeline.INDEFINITE);
                 timeline.play();
                 break;
@@ -199,7 +203,7 @@ public class Loteria extends Stage {
                     Cont.setText("00:00");
                     break;
                 case "00:00":
-                    Image nuevaImagen = new Image(getClass().getResource("/image/Gracias.png").toString());
+                    Image nuevaImagen = new Image(path+"Hecho.png");
                     Baraja.setImage(nuevaImagen);
                     timeline.stop();
                     Inic_Det.setText("Resultado");
@@ -234,11 +238,11 @@ public class Loteria extends Stage {
     private void Cambiar_carta() {
         if (!Mazo.isEmpty()) {
             int numeroCarta = Mazo.remove(0);
-            String imagePath = "/image/imagen" + numeroCarta + ".jpg";
-            Image nuevaImagen = new Image(getClass().getResource(imagePath).toString());
+            Image nuevaImagen = new Image(path+"imagen"+numeroCarta+".jpg");
+
             Baraja.setImage(nuevaImagen);
         } else {
-            Image nuevaImagen = new Image(getClass().getResource("/image/Gracias.png").toString());
+            Image nuevaImagen = new Image(path+"Gracias.png");
             Baraja.setImage(nuevaImagen);
             Cont.setText("00:00");
             Inic_Det.setText("Resultado");
@@ -262,7 +266,6 @@ public class Loteria extends Stage {
         }
         return numerosDisponibles.remove(0);
     }
-
 
 }
 

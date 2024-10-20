@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
+import java.io.File;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Random;
@@ -40,6 +41,7 @@ public class Buscaminas extends Stage {
     Random random;
     private final ButtonType Reintentar = new ButtonType("Reintentar");
     private final ButtonType Salir = new ButtonType("Salir");
+    private String path = new String("C:\\Users\\Admin\\IdeaProjects\\TAP2024b\\src\\main\\resources\\image\\");
 
 
     public Buscaminas() {
@@ -73,10 +75,10 @@ public class Buscaminas extends Stage {
         vbox.setAlignment(Pos.TOP_CENTER);
         vbox.setSpacing(20);
         escena = new Scene(vbox);
-        escena.getStylesheets().add(getClass().getResource("/styles/Buscaminas.css").toExternalForm());
-    }
+        escena.getStylesheets().add(new File("C:\\Users\\Admin\\IdeaProjects\\TAP2024b\\src\\main\\resources\\Styles\\Buscaminas.css").toURI().toString());    }
 
-    private void init() {
+    private void init()
+    {
         String textoBombas = Txt_Bombas.getText();
         lbl_error.setText("");
 
@@ -121,7 +123,7 @@ public class Buscaminas extends Stage {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 mapaB[i][j] = new Button();
-                mapaB[i][j].setPrefSize(50, 50);
+                mapaB[i][j].setPrefSize(60, 60);
                 cambiar(mapaB[i][j], i, j);
                 mapa.add(mapaB[i][j], j, i);
             }
@@ -129,13 +131,13 @@ public class Buscaminas extends Stage {
     }
 
     private void cambiar(Button B, int x, int y) {
-        Image bander = new Image(getClass().getResource("/image/bandera.jpg").toString());
-        ImageView imvBan = new ImageView(bander);
+        //Image bander = new Image(getClass().getResource("/image/bandera.jpg").toString());
+        ImageView imvBan = new ImageView(new Image(path+"bandera.jpg"));
         imvBan.setFitWidth(30);
         imvBan.setFitHeight(30);
 
-        Image mina = new Image(getClass().getResource("/image/mina.jpg").toString());
-        ImageView imvMina = new ImageView(mina);
+       // Image mina = new Image(getClass().getResource("/image/mina.jpg").toString());
+        ImageView imvMina =  new ImageView(new Image(path+"mina.jpg"));
         imvMina.setFitWidth(30);
         imvMina.setFitHeight(30);
 
@@ -222,7 +224,7 @@ public class Buscaminas extends Stage {
     }
 
     private void revelarBombas() {
-        Image mina = new Image(getClass().getResource("/image/mina.jpg").toString());
+        Image mina = new Image(path+"mina.jpg");
         ImageView imvMina;
 
         for (int i = 0; i < 8; i++) {
@@ -244,11 +246,12 @@ public class Buscaminas extends Stage {
         vbox.getChildren().clear();
         Txt_Bombas.clear();
         vbox.getChildren().addAll(lbl_info, hbox_txt);
+        this.sizeToScene();
     }
 
     private void verificarVictoria() {
-        boolean victoria = true;
 
+        boolean victoria = true;
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 if (!bombasMapa[i][j] && Objects.equals(mapaB[i][j].getText(), "")) {

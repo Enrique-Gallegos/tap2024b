@@ -8,6 +8,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.util.Set;
 
 public class Calculadora extends Stage {
@@ -80,7 +81,7 @@ public class Calculadora extends Stage {
         vBox = new VBox(txtPantalla, gdpTeclado, btnClear);
         vBox.setSpacing(5);
         escena = new Scene(vBox, 200, 270);
-        escena.getStylesheets().add(getClass().getResource("/styles/Calc.css").toString());
+        escena.getStylesheets().add(new File("C:\\Users\\Admin\\IdeaProjects\\TAP2024b\\src\\main\\resources\\Styles\\Calc.css").toURI().toString());
     }
 
     private void CrearTeclado() {
