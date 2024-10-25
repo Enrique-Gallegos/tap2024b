@@ -75,8 +75,8 @@ public class Buscaminas extends Stage {
         vbox.setAlignment(Pos.TOP_CENTER);
         vbox.setSpacing(20);
         escena = new Scene(vbox);
-        escena.getStylesheets().add(new File("C:\\Users\\Admin\\IdeaProjects\\TAP2024b\\src\\main\\resources\\Styles\\Buscaminas.css").toURI().toString());    }
-
+        escena.getStylesheets().add(new File("C:\\Users\\Admin\\IdeaProjects\\TAP2024b\\src\\main\\resources\\Styles\\Buscaminas.css").toURI().toString());
+    }
     private void init()
     {
         String textoBombas = Txt_Bombas.getText();

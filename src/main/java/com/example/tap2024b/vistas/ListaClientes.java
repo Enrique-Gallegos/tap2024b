@@ -27,10 +27,8 @@ public class ListaClientes extends Stage {
     private void CrearUI() {
 
         tlbMenu = new ToolBar();
-        ImageView imv = new ImageView(new Image("C:\\Users\\Admin\\IdeaProjects\\TAP2024b\\src\\main\\resources\\image\\Derecha.png"));
-        Button btnAddCte = new Button();
+        Button btnAddCte = new Button("Agregar Cliente");
         btnAddCte.setOnAction(actionEvent -> new FormCliente(tbvClientes,null));
-        btnAddCte.setGraphic(imv);
         tlbMenu.getItems().add(btnAddCte);
 
         CrearTable();
@@ -51,25 +49,26 @@ public class ListaClientes extends Stage {
         TableColumn<ClienteDAO, String> tbcEmail = new TableColumn<>("Email");
         tbcEmail.setCellValueFactory(new PropertyValueFactory<>("emailClt"));
 
-        TableColumn<ClienteDAO,String> tbcEditar = new TableColumn<ClienteDAO,String>();
-        tbcEditar.setCellFactory(
-                new Callback<TableColumn<ClienteDAO, String>, TableCell<ClienteDAO, String>>() {
-                    @Override
-                    public TableCell<ClienteDAO, String> call(TableColumn<ClienteDAO, String> param) {
-                        return new ButtonCell("Editar");
-                    }
+        TableColumn<ClienteDAO, String> tbcEditar = new TableColumn<>("Editar");
+        tbcEditar.setCellFactory(col -> new ButtonCell<>(
+                "Editar",
+                cliente -> new FormCliente(tbvClientes, cliente),  // Acción de edición
+                cliente -> {
+                    cliente.DELETE();  // Acción de eliminación
+                    tbvClientes.setItems(cliente.SELECTALL());
                 }
-        );
+        ));
 
-        TableColumn<ClienteDAO,String> tbcEliminar = new TableColumn<ClienteDAO,String>();
-        tbcEliminar.setCellFactory(
-                new Callback<TableColumn<ClienteDAO, String>, TableCell<ClienteDAO, String>>() {
-                    @Override
-                    public TableCell<ClienteDAO, String> call(TableColumn<ClienteDAO, String> param) {
-                        return new ButtonCell("Eliminar");
-                    }
+        TableColumn<ClienteDAO, String> tbcEliminar = new TableColumn<>("Eliminar");
+        tbcEliminar.setCellFactory(col -> new ButtonCell<>(
+                "Eliminar",
+                cliente -> new FormCliente(tbvClientes, cliente),  // Reusar acción de edición si quieres
+                cliente -> {
+                    cliente.DELETE();  // Acción de eliminación
+                    tbvClientes.setItems(cliente.SELECTALL());
                 }
-        );
+        ));
+
 
         tbvClientes.getColumns().addAll(tbcNom,tbcTel,tbcEmail,tbcEditar,tbcEliminar);
         tbvClientes.setItems(objClt.SELECTALL());

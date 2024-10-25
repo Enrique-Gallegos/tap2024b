@@ -35,7 +35,7 @@ public class HelloApplication extends Application {
         mitLoteria = new MenuItem("Loteria");
         mitLoteria.setOnAction(event -> new Loteria());
         mitSpotify = new MenuItem("Spotify");
-        mitSpotify.setOnAction(actionEvent -> new ListaClientes());
+        mitSpotify.setOnAction(actionEvent -> new Spotify());
         mitBuscaminas = new MenuItem("Buscaminas");
         mitBuscaminas.setOnAction(actionEvent -> new Buscaminas());
         mitPista = new MenuItem("Pista Hilos");
