@@ -5,8 +5,12 @@ import com.example.tap2024b.models.AlbumDAO;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import java.io.ByteArrayInputStream;
 
 public class ListaAlbum extends Stage {
     private TableView<AlbumDAO> tbvAlbum;
@@ -45,26 +49,45 @@ public class ListaAlbum extends Stage {
         TableColumn<AlbumDAO, String> tbcAño = new TableColumn<>("Año de Salida");
         tbcAño.setCellValueFactory(new PropertyValueFactory<>("añoSalida"));
 
-        // Column for the Edit button
+        TableColumn<AlbumDAO, byte[]> tbcImagen = new TableColumn<>("Imagen");
+        tbcImagen.setCellValueFactory(new PropertyValueFactory<>("imagen"));
+
+        tbcImagen.setCellFactory(col -> new TableCell<>() {
+            private final ImageView imageView = new ImageView();
+
+            @Override
+            protected void updateItem(byte[] imageData, boolean empty) {
+                super.updateItem(imageData, empty);
+                if (empty || imageData == null) {
+                    setGraphic(null);
+                } else {
+                    Image img = new Image(new ByteArrayInputStream(imageData));
+                    imageView.setImage(img);
+                    imageView.setFitHeight(100);
+                    imageView.setFitWidth(100);
+                    setGraphic(imageView);
+                }
+            }
+        });
+
         TableColumn<AlbumDAO, String> tbcEditar = new TableColumn<>("Editar");
         tbcEditar.setCellFactory(col -> new ButtonCell<>(
                 "Editar",
-                album -> new FormAlbum(tbvAlbum, album), // Action for editing
-                null  // No delete action in the edit column
+                album -> new FormAlbum(tbvAlbum, album),
+                null
         ));
 
-        // Column for the Delete button
         TableColumn<AlbumDAO, String> tbcEliminar = new TableColumn<>("Eliminar");
         tbcEliminar.setCellFactory(col -> new ButtonCell<>(
                 "Eliminar",
-                null, // No edit action in the delete column
+                null,
                 album -> {
-                    album.DELETE();  // Delete action
+                    album.DELETE();
                     tbvAlbum.setItems(album.SELECTALL());
                 }
         ));
 
-        tbvAlbum.getColumns().addAll(tbcBanda, tbcNombre, tbcAño, tbcEditar, tbcEliminar);
+        tbvAlbum.getColumns().addAll(tbcBanda, tbcNombre, tbcAño, tbcImagen, tbcEditar, tbcEliminar);
         tbvAlbum.setItems(objAlbum.SELECTALL());
     }
 

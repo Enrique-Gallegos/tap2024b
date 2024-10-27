@@ -49,9 +49,9 @@ public class ListaArt extends Stage {
         TableColumn<ArtistaDAO, String> tbcEditar = new TableColumn<>("Editar");
         tbcEditar.setCellFactory(col -> new ButtonCell<>(
                 "Editar",
-                artista -> new FormArt(tbvArtistas, artista),  // Acción de edición
+                artista -> new FormArt(tbvArtistas, artista),
                 artista -> {
-                    artista.DELETE();  // Acción de eliminación
+                    artista.DELETE();
                     tbvArtistas.setItems(artista.SELECTALL());
                 }
         ));
@@ -59,9 +59,9 @@ public class ListaArt extends Stage {
         TableColumn<ArtistaDAO, String> tbcEliminar = new TableColumn<>("Eliminar");
         tbcEliminar.setCellFactory(col -> new ButtonCell<>(
                 "Eliminar",
-                artista -> new FormArt(tbvArtistas, artista),  // Acción de edición
+                artista -> new FormArt(tbvArtistas, artista),
                 artista -> {
-                    artista.DELETE();  // Acción de eliminación
+                    artista.DELETE();
                     tbvArtistas.setItems(artista.SELECTALL());
                 }
         ));

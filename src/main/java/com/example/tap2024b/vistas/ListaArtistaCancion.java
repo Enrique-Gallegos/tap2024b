@@ -22,7 +22,6 @@ public class ListaArtistaCancion extends Stage {
     private VBox vbox;
     private Scene escena;
 
-    // Declarar columnas de editar y eliminar como atributos de clase
     private TableColumn<ArtistaCancionDAO, String> tbcEditar;
     private TableColumn<ArtistaCancionDAO, String> tbcEliminar;
 
@@ -75,7 +74,6 @@ public class ListaArtistaCancion extends Stage {
         TableColumn<ArtistaCancionDAO, String> colInterpretado = new TableColumn<>("Interpretado");
         colInterpretado.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getInterpretado()));
 
-        // Inicializar columnas de editar y eliminar aquí
         tbcEditar = new TableColumn<>("Editar");
         tbcEditar.setCellFactory(col -> new ButtonCell<>(
                 "Editar",
@@ -110,7 +108,7 @@ public class ListaArtistaCancion extends Stage {
             ArtistaCancionDAO objRelaciones = new ArtistaCancionDAO();
             ObservableList<ArtistaCancionDAO> listaRelaciones = objRelaciones.Select_By_Artista(cbArtistas.getValue().getIdArt());
             tbvArtistaCancion.setItems(listaRelaciones);
-            tbvArtistaCancion.getColumns().removeAll(tbcEditar, tbcEliminar); // Ocultar columnas de botones
+            tbvArtistaCancion.getColumns().removeAll(tbcEditar, tbcEliminar);
         }
     }
 
@@ -119,7 +117,7 @@ public class ListaArtistaCancion extends Stage {
             ArtistaCancionDAO objRelaciones = new ArtistaCancionDAO();
             ObservableList<ArtistaCancionDAO> listaRelaciones = objRelaciones.Select_By_Cancion(cbCanciones.getValue().getIdCancion());
             tbvArtistaCancion.setItems(listaRelaciones);
-            tbvArtistaCancion.getColumns().removeAll(tbcEditar, tbcEliminar); // Ocultar columnas de botones
+            tbvArtistaCancion.getColumns().removeAll(tbcEditar, tbcEliminar);
         }
     }
 
@@ -127,10 +125,10 @@ public class ListaArtistaCancion extends Stage {
         ArtistaCancionDAO objRelaciones = new ArtistaCancionDAO();
         tbvArtistaCancion.setItems(objRelaciones.SELECTALL());
         if (!tbvArtistaCancion.getColumns().contains(tbcEditar)) {
-            tbvArtistaCancion.getColumns().add(tbcEditar); // Mostrar columna de editar
+            tbvArtistaCancion.getColumns().add(tbcEditar);
         }
         if (!tbvArtistaCancion.getColumns().contains(tbcEliminar)) {
-            tbvArtistaCancion.getColumns().add(tbcEliminar); // Mostrar columna de eliminar
+            tbvArtistaCancion.getColumns().add(tbcEliminar);
         }
     }
 }

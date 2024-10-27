@@ -42,21 +42,19 @@ public class ListaGenero extends Stage {
         TableColumn<GeneroDAO, String> tbcDescripcion = new TableColumn<>("Descripción");
         tbcDescripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
 
-        // Columna para el botón de editar
         TableColumn<GeneroDAO, String> tbcEditar = new TableColumn<>("Editar");
         tbcEditar.setCellFactory(col -> new ButtonCell<>(
                 "Editar",
-                genero -> new FormGenero(tbvGeneros, genero), // Acción editar
-                null // Dejar la acción de eliminar nula para este botón
+                genero -> new FormGenero(tbvGeneros, genero),
+                null
         ));
 
-        // Columna para el botón de eliminar
         TableColumn<GeneroDAO, String> tbcEliminar = new TableColumn<>("Eliminar");
         tbcEliminar.setCellFactory(col -> new ButtonCell<>(
                 "Eliminar",
-                null, // Dejar la acción de editar nula para este botón
+                null,
                 genero -> {
-                    genero.DELETE(); // Acción eliminar
+                    genero.DELETE();
                     tbvGeneros.setItems(genero.SELECTALL());
                 }
         ));

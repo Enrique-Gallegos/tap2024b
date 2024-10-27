@@ -10,7 +10,7 @@ public class CancionDAO {
     private int idCancion;
     private String nombre;
     private float costoCancion;
-    private String generoID;  // Referencia a Tipo_Genero en GeneroDAO
+    private String generoID;
 
     public GeneroDAO getGenero() {
         GeneroDAO genero = new GeneroDAO();
@@ -105,7 +105,7 @@ public class CancionDAO {
                 cancion.setIdCancion(rs.getInt("ID_Cancion"));
                 cancion.setNombre(rs.getString("NomCancion"));
                 cancion.setCostoCancion(rs.getFloat("costoCancion"));
-                cancion.setGeneroID(rs.getString("GeneroID"));  // Almacena el Tipo_Genero
+                cancion.setGeneroID(rs.getString("GeneroID"));
                 listaCanciones.add(cancion);
             }
         } catch (SQLException e) {

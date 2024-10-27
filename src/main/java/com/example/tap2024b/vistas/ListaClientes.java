@@ -52,9 +52,9 @@ public class ListaClientes extends Stage {
         TableColumn<ClienteDAO, String> tbcEditar = new TableColumn<>("Editar");
         tbcEditar.setCellFactory(col -> new ButtonCell<>(
                 "Editar",
-                cliente -> new FormCliente(tbvClientes, cliente),  // Acción de edición
+                cliente -> new FormCliente(tbvClientes, cliente),
                 cliente -> {
-                    cliente.DELETE();  // Acción de eliminación
+                    cliente.DELETE();
                     tbvClientes.setItems(cliente.SELECTALL());
                 }
         ));
@@ -62,9 +62,9 @@ public class ListaClientes extends Stage {
         TableColumn<ClienteDAO, String> tbcEliminar = new TableColumn<>("Eliminar");
         tbcEliminar.setCellFactory(col -> new ButtonCell<>(
                 "Eliminar",
-                cliente -> new FormCliente(tbvClientes, cliente),  // Reusar acción de edición si quieres
+                cliente -> new FormCliente(tbvClientes, cliente),
                 cliente -> {
-                    cliente.DELETE();  // Acción de eliminación
+                    cliente.DELETE();
                     tbvClientes.setItems(cliente.SELECTALL());
                 }
         ));

@@ -74,7 +74,6 @@ public class ListaAlbumCancion extends Stage {
         TableColumn<CancionAlbumDAO, String> colDescrip = new TableColumn<>("Descripcion");
         colDescrip.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getDescripcion()));
 
-        // Inicializar columnas de botones aquí
         tbcEditar = new TableColumn<>("Editar");
         tbcEditar.setCellFactory(col -> new ButtonCell<>(
                 "Editar",
@@ -104,7 +103,7 @@ public class ListaAlbumCancion extends Stage {
             CancionAlbumDAO objRelaciones = new CancionAlbumDAO();
             ObservableList<CancionAlbumDAO> RelacionesLista = objRelaciones.SELECT_BY_ALBUM(cbAlbum.getValue().getIdAlbum());
             tbvCancionAlbum.setItems(RelacionesLista);
-            tbvCancionAlbum.getColumns().removeAll(tbcEditar, tbcEliminar); // Oculta las columnas de botones
+            tbvCancionAlbum.getColumns().removeAll(tbcEditar, tbcEliminar);
         }
     }
 
@@ -113,7 +112,7 @@ public class ListaAlbumCancion extends Stage {
             CancionAlbumDAO objRelaciones = new CancionAlbumDAO();
             ObservableList<CancionAlbumDAO> RelacionesLista = objRelaciones.SELECT_BY_CANCION(cbCancion.getValue().getIdCancion());
             tbvCancionAlbum.setItems(RelacionesLista);
-            tbvCancionAlbum.getColumns().removeAll(tbcEditar, tbcEliminar); // Oculta las columnas de botones
+            tbvCancionAlbum.getColumns().removeAll(tbcEditar, tbcEliminar);
         }
     }
 
@@ -121,10 +120,10 @@ public class ListaAlbumCancion extends Stage {
         CancionAlbumDAO objRelaciones = new CancionAlbumDAO();
         tbvCancionAlbum.setItems(objRelaciones.SELECTALL());
         if (!tbvCancionAlbum.getColumns().contains(tbcEditar)) {
-            tbvCancionAlbum.getColumns().add(tbcEditar); // Muestra las columnas de botones
+            tbvCancionAlbum.getColumns().add(tbcEditar);
         }
         if (!tbvCancionAlbum.getColumns().contains(tbcEliminar)) {
-            tbvCancionAlbum.getColumns().add(tbcEliminar); // Muestra las columnas de botones
+            tbvCancionAlbum.getColumns().add(tbcEliminar);
         }
     }
 

@@ -8,7 +8,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.file.Files;
 
 public class FormAlbum extends Stage {
 
@@ -16,10 +22,11 @@ public class FormAlbum extends Stage {
     private TextField txtBanda;
     private TextField txtNombre;
     private TextField txtAño;
-    private Button btnGuardar;
+    private Button btnGuardar, btnCargarImagen;
     private VBox vbox;
     private AlbumDAO objAlbum;
     private TableView<AlbumDAO> tbvAlbum;
+    private byte[] imagenBytes;
 
     public FormAlbum(TableView<AlbumDAO> tbv, AlbumDAO objA) {
         this.tbvAlbum = tbv;
@@ -49,20 +56,38 @@ public class FormAlbum extends Stage {
         txtAño = new TextField();
         txtAño.setPromptText("Año de Salida");
 
+        btnCargarImagen = new Button("Cargar Imagen");
+        btnCargarImagen.setOnAction(e -> cargarImagen());
+
         btnGuardar = new Button("Guardar");
         btnGuardar.setOnAction(actionEvent -> GuardarAlbum());
 
-        vbox = new VBox(txtBanda, txtNombre, txtAño, btnGuardar);
+        vbox = new VBox(txtBanda, txtNombre, txtAño, btnCargarImagen, btnGuardar);
         vbox.setPadding(new Insets(10));
         vbox.setSpacing(10);
 
-        scene = new Scene(vbox, 300, 200);
+        scene = new Scene(vbox, 300, 250);
+    }
+
+    private void cargarImagen() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Imágenes", "*.png", "*.jpg", "*.jpeg"));
+        File file = fileChooser.showOpenDialog(this);
+        if (file != null) {
+            try {
+                imagenBytes = Files.readAllBytes(file.toPath());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void GuardarAlbum() {
         objAlbum.setBanda(txtBanda.getText());
         objAlbum.setNombre(txtNombre.getText());
         objAlbum.setAñoSalida(txtAño.getText());
+        objAlbum.setImagen(imagenBytes);
+
         String msj;
         Alert.AlertType type;
 
