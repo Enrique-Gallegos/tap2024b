@@ -1,0 +1,24 @@
+#font-lbl{
+    -fx-font: bold italic 50pt "Arial";
+    -fx-pref-width: 320px;
+}
+.root{
+    -fx-background-color: #046812;
+}
+
+#font-inic{
+    -fx-font: bold italic 30pt "Arial";
+}
+
+#font-G_P{
+    -fx-font: bold italic 100pt "Arial";
+
+}
+
+#font-button{
+    -fx-border-radius: 100;
+    -fx-background-radius: 100;
+    -fx-background-color: #046812;
+    -fx-border-color: black;
+    -fx-border-width: 5;
+}

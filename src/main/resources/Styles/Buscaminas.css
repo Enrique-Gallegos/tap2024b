@@ -1,0 +1,48 @@
+.root{
+    -fx-background-color: rgba(200, 196, 196, 0.57);
+}
+
+#lbl_info {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2b2b2b;
+}
+#lbl_error {
+    -fx-text-fill: red;
+}
+
+#Txt_bombas {
+    -fx-padding: 10px;
+    -fx-font-size: 14px;
+    -fx-border-color: #ccc;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
+#btn_iniciar {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
+#hbox_info {
+    -fx-alignment: center;
+    -fx-spacing: 20px;
+    -fx-padding: 10px;
+}
+
+#lbl_banderas, #lbl_bombas {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.button {
+    -fx-border-color: rgb(0, 0, 0);
+    -fx-background-color: rgb(255, 255, 255);
+    -fx-font-size: 16px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
