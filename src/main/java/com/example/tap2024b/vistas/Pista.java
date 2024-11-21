@@ -22,6 +22,7 @@ public class Pista extends Stage {
     private CorredorThread[] thrCorredores;
     private VBox vbox;
 
+
     public Pista(){
         CrearUI();
         this.setTitle("Pista de Atletismo");

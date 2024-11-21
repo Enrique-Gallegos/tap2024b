@@ -27,7 +27,7 @@ public class HelloApplication extends Application {
     private BorderPane bdpPrincipal;
     private MenuBar mnbPrincipal;
     private Menu menCompetencia1,menCompetencia2,menSalir;
-    private MenuItem mitCalculadora,mitLoteria,mitSpotify,mitBuscaminas,mitPista;
+    private MenuItem mitCalculadora,mitLoteria,mitSpotify,mitBuscaminas,mitPista,mitSimulador;
 
     public void CrearUI(){
         mitCalculadora = new MenuItem("Calculadora");
@@ -40,13 +40,14 @@ public class HelloApplication extends Application {
         mitBuscaminas.setOnAction(actionEvent -> new Buscaminas());
         mitPista = new MenuItem("Pista Hilos");
         mitPista.setOnAction(ActionEvent-> new Pista());
-
+        mitSimulador = new MenuItem("Simulador de Impresion");
+        mitSimulador.setOnAction(ActionEvent -> new SimuladorImpresion());
 
         menCompetencia1 = new Menu("Competencia 1");
         menCompetencia1.getItems().addAll(mitCalculadora,mitLoteria,mitSpotify,mitBuscaminas);
 
         menCompetencia2 = new Menu("Competencia 2");
-        menCompetencia2.getItems().addAll(mitPista);
+        menCompetencia2.getItems().addAll(mitPista,mitSimulador);
 
         mnbPrincipal = new MenuBar(menCompetencia1, menCompetencia2);
         bdpPrincipal = new BorderPane();
